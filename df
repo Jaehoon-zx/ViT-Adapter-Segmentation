@@ -1,0 +1,253 @@
+[33mcommit 19a5bc8b51d8425e11ec286ad917c25169e14235[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: Jaehoon-zx <judol1@snu.ac.kr>
+Date:   Wed Feb 22 17:59:13 2023 +0900
+
+    first commit
+
+[33mcommit 50056f9f15dfa638b2882fe7f629db2e2136a0bb[m
+Author: Jaehoon-zx <judol1@snu.ac.kr>
+Date:   Wed Feb 22 17:38:58 2023 +0900
+
+    first commit
+
+[33mcommit 9689ac6d9e961a90db3ca4bb7123de0add6731a9[m
+Author: Zhe Chen <wztxy89@163.com>
+Date:   Fri Feb 10 12:06:56 2023 +0800
+
+    Update README.md
+
+[33mcommit f5634391863cf160187a3207218e07b25a9f36af[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Wed Feb 8 19:17:16 2023 +0800
+
+    support panoptic segmentation
+
+[33mcommit ee9c9ba50509576c4d9b7efb310cfb12b92b3edd[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Tue Feb 7 23:10:29 2023 +0800
+
+    add a config for Mask2Former+BEiT-Adapter-L
+    
+    ade20k 160k iters without coco-stuff
+
+[33mcommit 8a40c909de3cf8f5e44ad5332d8d69e14bf0aa86[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Mon Feb 6 10:33:54 2023 +0800
+
+    update obj365_detection.py
+
+[33mcommit dfd42567da8416d443a3bf4cba51e156c34d5a5b[m
+Author: Zhe Chen <wztxy89@163.com>
+Date:   Sat Feb 4 23:04:24 2023 +0800
+
+    Update README.md
+
+[33mcommit c6673d374ddbfc378ca3658e845308c20cf66ba8[m
+Author: Zhe Chen <wztxy89@163.com>
+Date:   Sun Jan 29 21:16:49 2023 +0800
+
+    Update README.md
+
+[33mcommit 7923695613e1070ed5925eb78f8a5df5e6031e0c[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Sun Jan 29 19:49:13 2023 +0800
+
+    fix some wrong detection configs
+
+[33mcommit ad3d5b430946d8209a90c6640d0e113cdde369dd[m
+Author: Zhe Chen <wztxy89@163.com>
+Date:   Tue Jan 24 09:44:04 2023 +0800
+
+    Update README.md
+
+[33mcommit d35f25aef88229c6c3ad71110746804518cdef92[m
+Author: vvvb <43984223+vvvb-github@users.noreply.github.com>
+Date:   Sun Jan 22 10:18:15 2023 +0800
+
+    Update grounding_dino.py
+
+[33mcommit 211215fa50e0d19ca7189819821e8158999e24de[m
+Author: Zhe Chen <wztxy89@163.com>
+Date:   Sat Jan 21 18:40:50 2023 +0800
+
+    Update README.md
+
+[33mcommit 1cf313fbaacf6ec3598c694515a1d47a471aa030[m
+Author: vvvb <43984223+vvvb-github@users.noreply.github.com>
+Date:   Sat Jan 21 17:34:39 2023 +0800
+
+    release code for wsdm2023 cup
+
+[33mcommit 4c76a8561b38846f4ab1241ed9e431a760c64837[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Wed Dec 21 13:31:58 2022 +0800
+
+    add README.md for chase_db1 and postdom
+
+[33mcommit b1446aeed0e7adf61657ead16271a4d998200cc4[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Fri Dec 16 23:33:49 2022 +0800
+
+    add video demo for segmentation
+
+[33mcommit 9607c9b821b72a8d08eb030b9c6cb791d967b329[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Tue Dec 13 00:38:45 2022 +0800
+
+    clean code
+
+[33mcommit e5ccd4269f681502c8a9936a405e8e2aff9173f7[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Sat Nov 19 20:32:11 2022 +0800
+
+    add --deterministic by default
+
+[33mcommit d0f6aab9f9a5db80dd0c56fafd48b2c1058a92e4[m
+Author: duanduanduanyuchen <duanyuchen0501@foxmail.com>
+Date:   Wed Nov 2 18:28:55 2022 +0800
+
+    update light version in seg
+
+[33mcommit ff2897b45d3a7173d77271d471656e722d6ca905[m
+Author: Zhe Chen <wztxy89@163.com>
+Date:   Tue Oct 11 13:01:59 2022 +0800
+
+    Update README.md
+
+[33mcommit 709e2ea7a88f7a4df909cfbde518fd87805a007b[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Tue Oct 11 01:18:11 2022 +0800
+
+    update segmentation models
+
+[33mcommit c24519f684e01a4b0226a5e24cf98eb4a7f33b22[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Mon Oct 10 19:19:15 2022 +0800
+
+    update detection models
+
+[33mcommit d8901a32835b98f1dd2e24519e54b1a86b1abf70[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Wed Sep 14 23:59:21 2022 +0800
+
+    update detection code & configs
+
+[33mcommit 6f2bab913df686575e528587a1ded83c26c00961[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Tue Aug 30 21:11:57 2022 +0800
+
+    add potsdam
+
+[33mcommit 377656ba1f5c58ec88eefcdb8052c304569b662c[m
+Author: Zhe Chen <wztxy89@163.com>
+Date:   Tue Jul 26 21:06:15 2022 +0800
+
+    Update README.md
+
+[33mcommit f0f730b7849250a2123f894897bba8fe05e0814a[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Wed Jul 13 20:51:11 2022 +0800
+
+    add image demo & video demo
+
+[33mcommit 8dd6b140be289c9a88a2f539c3c05e30c42172ff[m
+Author: Yuchen Duan <duanyuchen@pjlab.org.cn>
+Date:   Sun Jul 10 18:16:47 2022 +0800
+
+    fix broken config link
+
+[33mcommit bebe1fd9210e4fe7339252df4793f4ad23c4526f[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Fri Jun 24 16:37:27 2022 +0800
+
+    support with_cp for segmentation to save memory
+
+[33mcommit c00a24df9b7780951daccf850bd5198413bfc989[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Mon Jun 20 11:07:44 2022 +0800
+
+    update README.md
+
+[33mcommit fa32e74b2e69d676e263b561353a45871523f701[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Sun Jun 19 19:46:58 2022 +0800
+
+    add DeiT & AugReg pre-train for segmentation
+
+[33mcommit 29f51dda2a6ef537c452438c6e5e7e5493154d17[m
+Author: Zhe Chen <wztxy89@163.com>
+Date:   Sun Jun 19 13:27:26 2022 +0800
+
+    Update README.md
+
+[33mcommit e14d75a5075cfba137d9b188d782944e64927d32[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Fri Jun 17 20:17:32 2022 +0800
+
+    support with_cp for detection to save memory
+
+[33mcommit 236aa9ec35214946c3d9810c3d3525a2e4b1fd55[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Sun Jun 12 13:36:57 2022 +0800
+
+    fix a potential bug
+
+[33mcommit 83a0774f014267a92749f96c7ce24f2e35253e3d[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Fri Jun 10 23:30:41 2022 +0800
+
+    update vit_adapter in segmentation
+
+[33mcommit 4e7d7185b0435360dccd642de78a11672801895b[m
+Author: Zhe Chen <wztxy89@163.com>
+Date:   Thu Jun 9 13:22:50 2022 +0800
+
+    update ViT-Adapter-L + HTC++
+
+[33mcommit 9588c3b510f02f541a907042d03168eca4f1923b[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Sun Jun 5 21:54:22 2022 +0800
+
+    add some results of ViT-Adapter-B
+
+[33mcommit 825c6b1a9a6b8495c543ce405772e39c67363bea[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Sun Jun 5 13:13:55 2022 +0800
+
+    single image inference
+
+[33mcommit b28b079e50f5b8dde9412a49adfa6494b1ddb130[m
+Author: Zhe Chen <wztxy89@163.com>
+Date:   Sat Jun 4 21:16:50 2022 +0800
+
+    Update README.md
+
+[33mcommit 7417df929e1042fb806515692de245f2a94147b2[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Sat Jun 4 16:25:10 2022 +0800
+
+    clean up duplicate code
+
+[33mcommit 14b91d714feba6e492387f1d5fefc1f03655402a[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Sat Jun 4 02:55:06 2022 +0800
+
+    upload segmentation code
+
+[33mcommit 28533a840ccda6f774672e89b4fd23cd4b8f6c5a[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Tue May 31 01:11:34 2022 +0800
+
+    update detection code
+
+[33mcommit 56637b576739e7a7f4a645de4bbd414893c715b7[m
+Author: Zhe Chen <wztxy89@163.com>
+Date:   Tue May 17 03:03:37 2022 +0800
+
+    Update README.md
+
+[33mcommit a7c02c128bc4c9663e0c624df908b19a351acaf1[m
+Author: zhe chen <wztxy89@163.com>
+Date:   Tue May 17 01:33:04 2022 +0800
+
+    Initial commit

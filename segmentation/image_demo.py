@@ -11,14 +11,15 @@ from mmcv.runner import load_checkpoint
 from mmseg.core import get_classes
 import cv2
 import os.path as osp
+import glob
 
 
 def main():
     parser = ArgumentParser()
     parser.add_argument('config', help='Config file')
     parser.add_argument('checkpoint', help='Checkpoint file')
-    parser.add_argument('img', help='Image file')
-    parser.add_argument('--out', type=str, default="demo", help='out dir')
+    parser.add_argument('img_dir', help='Image file')
+    parser.add_argument('--out', type=str, default="inference", help='out dir')
     parser.add_argument(
         '--device', default='cuda:0', help='Device used for inference')
     parser.add_argument(
@@ -40,19 +41,28 @@ def main():
         model.CLASSES = checkpoint['meta']['CLASSES']
     else:
         model.CLASSES = get_classes(args.palette)
+    
+    for img in glob.glob(args.img_dir + '*.jpeg'):
+        # test a single image
+        result = inference_segmentor(model, img)
+        # show the results
+        if hasattr(model, 'module'):
+            model = model.module
+        # img = model.show_result(args.img, result,
+        #                         palette=get_palette(args.palette),
+        #                         show=False, opacity=args.opacity)
+
+        classes = ('cloudy', 'uncertain clear', 'probably clear', 'confident clear')
+        palette = [[255, 0, 0], [0, 255, 0], [0, 0, 255], [128, 128, 0]]
         
-    # test a single image
-    result = inference_segmentor(model, args.img)
-    # show the results
-    if hasattr(model, 'module'):
-        model = model.module
-    img = model.show_result(args.img, result,
-                            palette=get_palette(args.palette),
-                            show=False, opacity=args.opacity)
-    mmcv.mkdir_or_exist(args.out)
-    out_path = osp.join(args.out, osp.basename(args.img))
-    cv2.imwrite(out_path, img)
-    print(f"Result is save at {out_path}")
+        result = model.show_result(img, result,
+                                palette = palette,
+                                show=False, opacity=args.opacity)
+
+        mmcv.mkdir_or_exist(args.out)
+        out_path = osp.join(args.out, osp.basename(img))
+        cv2.imwrite(out_path, result)
+        print(f"Result is save at {out_path}")
 
 if __name__ == '__main__':
     main()

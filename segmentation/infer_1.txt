@@ -1,0 +1,18 @@
+/home/jaehoonhahm/ViT-Adapter-Segmentation/segmentation/mmseg_custom/models/losses/cross_entropy_loss.py:230: UserWarning: Default ``avg_non_ignore`` is False, if you would like to ignore the certain label and average loss over non-ignore labels, which is the same with PyTorch official cross_entropy, set ``avg_non_ignore=True``.
+  warnings.warn(
+load checkpoint from local path: test_1/best_mIoU_iter_4000.pth
+Traceback (most recent call last):
+  File "/home/jaehoonhahm/ViT-Adapter-Segmentation/segmentation/image_demo.py", line 68, in <module>
+    main()
+  File "/home/jaehoonhahm/ViT-Adapter-Segmentation/segmentation/image_demo.py", line 39, in main
+    checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
+  File "/home/jaehoonhahm/anaconda3/envs/seg/lib/python3.9/site-packages/mmcv/runner/checkpoint.py", line 542, in load_checkpoint
+    checkpoint = _load_checkpoint(filename, map_location, logger)
+  File "/home/jaehoonhahm/anaconda3/envs/seg/lib/python3.9/site-packages/mmcv/runner/checkpoint.py", line 481, in _load_checkpoint
+    return CheckpointLoader.load_checkpoint(filename, map_location, logger)
+  File "/home/jaehoonhahm/anaconda3/envs/seg/lib/python3.9/site-packages/mmcv/runner/checkpoint.py", line 251, in load_checkpoint
+    return checkpoint_loader(filename, map_location)
+  File "/home/jaehoonhahm/anaconda3/envs/seg/lib/python3.9/site-packages/mmcv/runner/checkpoint.py", line 267, in load_from_local
+    raise FileNotFoundError(f'{filename} can not be found.')
+FileNotFoundError: test_1/best_mIoU_iter_4000.pth can not be found.
+srun: error: c03: task 0: Exited with exit code 1

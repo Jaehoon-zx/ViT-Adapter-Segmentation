@@ -1,14 +1,16 @@
 # Copyright (c) Shanghai AI Lab. All rights reserved.
 _base_ = [
     '../_base_/models/mask2former_beit_pascal.py',
-    '../_base_/datasets/pascal_context_59.py',
+    '../_base_/datasets/modis.py',
     '../_base_/default_runtime.py',
     '../_base_/schedules/schedule_40k.py'
 ]
 crop_size = (480, 480)
 img_scale = (520, 520)
 # pretrained = 'https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_224_pt22k_ft22k.pth'
-pretrained = 'pretrained/beit_base_patch16_224_pt22k_ft22k.pth'
+pretrained = 'configs/pascal_context/pretrained/beit_base_patch16_224_pt22k_ft22k.pth'
+
+
 model = dict(
     pretrained=pretrained,
     backbone=dict(
@@ -145,6 +147,7 @@ data = dict(samples_per_gpu=2,
             train=dict(pipeline=train_pipeline),
             val=dict(pipeline=test_pipeline),
             test=dict(pipeline=test_pipeline))
-runner = dict(type='IterBasedRunner')
+runner = dict(type='IterBasedRunner', max_iters = 4000)
 checkpoint_config = dict(by_epoch=False, interval=1000, max_keep_ckpts=1)
 evaluation = dict(interval=4000, metric='mIoU', save_best='mIoU')
+load_from = 'configs/pascal_context/pretrained/mask2former_beit_adapter_base_480_40k_pascal_context_59.pth.tar'

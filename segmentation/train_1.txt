@@ -1,0 +1,648 @@
+2023-02-22 17:30:30,039 - mmseg - INFO - Environment info:
+------------------------------------------------------------
+sys.platform: linux
+Python: 3.9.16 (main, Jan 11 2023, 16:05:54) [GCC 11.2.0]
+CUDA available: True
+GPU 0: NVIDIA GeForce RTX 3090
+CUDA_HOME: /usr/local/cuda
+NVCC: Build cuda_11.7.r11.7/compiler.31294372_0
+GCC: gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+PyTorch: 1.9.0+cu111
+PyTorch compiling details: PyTorch built with:
+  - GCC 7.3
+  - C++ Version: 201402
+  - Intel(R) Math Kernel Library Version 2020.0.0 Product Build 20191122 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v2.1.2 (Git Hash 98be7e8afa711dc9b66c8ff3504129cb82013cdb)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - NNPACK is enabled
+  - CPU capability usage: AVX2
+  - CUDA Runtime 11.1
+  - NVCC architecture flags: -gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86
+  - CuDNN 8.0.5
+  - Magma 2.5.2
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=11.1, CUDNN_VERSION=8.0.5, CXX_COMPILER=/opt/rh/devtoolset-7/root/usr/bin/c++, CXX_FLAGS= -Wno-deprecated -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -fopenmp -DNDEBUG -DUSE_KINETO -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -Wno-narrowing -Wall -Wextra -Werror=return-type -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-result -Wno-unused-local-typedefs -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-stringop-overflow -Wno-psabi -Wno-error=pedantic -Wno-error=redundant-decls -Wno-error=old-style-cast -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_VERSION=1.9.0, USE_CUDA=ON, USE_CUDNN=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, 
+
+TorchVision: 0.10.0+cu111
+OpenCV: 4.7.0
+MMCV: 1.4.2
+MMCV Compiler: GCC 7.3
+MMCV CUDA Compiler: 11.1
+MMSegmentation: 0.20.2+9689ac6
+------------------------------------------------------------
+
+2023-02-22 17:30:30,043 - mmseg - INFO - Distributed training: False
+2023-02-22 17:30:30,732 - mmseg - INFO - Config:
+num_things_classes = 29
+num_stuff_classes = 30
+num_classes = 59
+norm_cfg = dict(type='SyncBN', requires_grad=True)
+model = dict(
+    type='EncoderDecoderMask2Former',
+    pretrained=
+    'configs/pascal_context/pretrained/beit_base_patch16_224_pt22k_ft22k.pth',
+    backbone=dict(
+        type='BEiTAdapter',
+        patch_size=16,
+        embed_dim=768,
+        depth=12,
+        num_heads=12,
+        mlp_ratio=4,
+        qkv_bias=True,
+        use_abs_pos_emb=False,
+        use_rel_pos_bias=True,
+        img_size=480,
+        init_values=1e-06,
+        drop_path_rate=0.2,
+        conv_inplane=64,
+        n_points=4,
+        deform_num_heads=12,
+        cffn_ratio=0.25,
+        deform_ratio=0.5,
+        interaction_indexes=[[0, 2], [3, 5], [6, 8], [9, 11]]),
+    decode_head=dict(
+        type='Mask2FormerHead',
+        in_channels=[768, 768, 768, 768],
+        feat_channels=256,
+        out_channels=256,
+        in_index=[0, 1, 2, 3],
+        num_things_classes=29,
+        num_stuff_classes=30,
+        num_queries=100,
+        num_transformer_feat_level=3,
+        pixel_decoder=dict(
+            type='MSDeformAttnPixelDecoder',
+            num_outs=3,
+            norm_cfg=dict(type='GN', num_groups=32),
+            act_cfg=dict(type='ReLU'),
+            encoder=dict(
+                type='DetrTransformerEncoder',
+                num_layers=6,
+                transformerlayers=dict(
+                    type='BaseTransformerLayer',
+                    attn_cfgs=dict(
+                        type='MultiScaleDeformableAttention',
+                        embed_dims=256,
+                        num_heads=8,
+                        num_levels=3,
+                        num_points=4,
+                        im2col_step=64,
+                        dropout=0.0,
+                        batch_first=False,
+                        norm_cfg=None,
+                        init_cfg=None),
+                    ffn_cfgs=dict(
+                        type='FFN',
+                        embed_dims=256,
+                        feedforward_channels=1024,
+                        num_fcs=2,
+                        ffn_drop=0.0,
+                        act_cfg=dict(type='ReLU', inplace=True)),
+                    operation_order=('self_attn', 'norm', 'ffn', 'norm')),
+                init_cfg=None),
+            positional_encoding=dict(
+                type='SinePositionalEncoding', num_feats=128, normalize=True),
+            init_cfg=None),
+        enforce_decoder_input_project=False,
+        positional_encoding=dict(
+            type='SinePositionalEncoding', num_feats=128, normalize=True),
+        transformer_decoder=dict(
+            type='DetrTransformerDecoder',
+            return_intermediate=True,
+            num_layers=9,
+            transformerlayers=dict(
+                type='DetrTransformerDecoderLayer',
+                attn_cfgs=dict(
+                    type='MultiheadAttention',
+                    embed_dims=256,
+                    num_heads=8,
+                    attn_drop=0.0,
+                    proj_drop=0.0,
+                    dropout_layer=None,
+                    batch_first=False),
+                ffn_cfgs=dict(
+                    embed_dims=256,
+                    feedforward_channels=2048,
+                    num_fcs=2,
+                    act_cfg=dict(type='ReLU', inplace=True),
+                    ffn_drop=0.0,
+                    dropout_layer=None,
+                    add_identity=True),
+                feedforward_channels=2048,
+                operation_order=('cross_attn', 'norm', 'self_attn', 'norm',
+                                 'ffn', 'norm')),
+            init_cfg=None),
+        loss_cls=dict(
+            type='CrossEntropyLoss',
+            use_sigmoid=False,
+            loss_weight=2.0,
+            reduction='mean',
+            class_weight=[
+                1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.1
+            ]),
+        loss_mask=dict(
+            type='CrossEntropyLoss',
+            use_sigmoid=True,
+            reduction='mean',
+            loss_weight=5.0),
+        loss_dice=dict(
+            type='DiceLoss',
+            use_sigmoid=True,
+            activate=True,
+            reduction='mean',
+            naive_dice=True,
+            eps=1.0,
+            loss_weight=5.0)),
+    train_cfg=dict(
+        num_points=12544,
+        oversample_ratio=3.0,
+        importance_sample_ratio=0.75,
+        assigner=dict(
+            type='MaskHungarianAssigner',
+            cls_cost=dict(type='ClassificationCost', weight=2.0),
+            mask_cost=dict(
+                type='CrossEntropyLossCost', weight=5.0, use_sigmoid=True),
+            dice_cost=dict(
+                type='DiceCost', weight=5.0, pred_act=True, eps=1.0)),
+        sampler=dict(type='MaskPseudoSampler')),
+    test_cfg=dict(
+        panoptic_on=True,
+        semantic_on=False,
+        instance_on=True,
+        max_per_image=100,
+        iou_thr=0.8,
+        filter_low_score=True,
+        mode='slide',
+        crop_size=(480, 480),
+        stride=(320, 320)),
+    init_cfg=None)
+dataset_type = 'MODIS_Dataset'
+data_root = 'MODIS_dataset_sample'
+img_norm_cfg = dict(
+    mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
+img_scale = (520, 520)
+crop_size = (480, 480)
+train_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(type='LoadAnnotations', reduce_zero_label=True),
+    dict(type='Resize', img_scale=(520, 520), ratio_range=(0.5, 2.0)),
+    dict(type='RandomCrop', crop_size=(480, 480), cat_max_ratio=0.75),
+    dict(type='RandomFlip', prob=0.5),
+    dict(type='PhotoMetricDistortion'),
+    dict(
+        type='Normalize',
+        mean=[123.675, 116.28, 103.53],
+        std=[58.395, 57.12, 57.375],
+        to_rgb=True),
+    dict(type='Pad', size=(480, 480), pad_val=0, seg_pad_val=255),
+    dict(type='ToMask'),
+    dict(type='DefaultFormatBundle'),
+    dict(
+        type='Collect',
+        keys=['img', 'gt_semantic_seg', 'gt_masks', 'gt_labels'])
+]
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(
+        type='MultiScaleFlipAug',
+        img_scale=(4096, 520),
+        flip=False,
+        transforms=[
+            dict(type='Resize', keep_ratio=True),
+            dict(type='ResizeToMultiple', size_divisor=32),
+            dict(type='RandomFlip'),
+            dict(
+                type='Normalize',
+                mean=[123.675, 116.28, 103.53],
+                std=[58.395, 57.12, 57.375],
+                to_rgb=True),
+            dict(type='ImageToTensor', keys=['img']),
+            dict(type='Collect', keys=['img'])
+        ])
+]
+data = dict(
+    samples_per_gpu=2,
+    workers_per_gpu=4,
+    train=dict(
+        type='MODIS_Dataset',
+        data_root='MODIS_dataset_sample',
+        img_dir='images',
+        ann_dir='labels',
+        split='splits/train.txt',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(type='LoadAnnotations', reduce_zero_label=True),
+            dict(type='Resize', img_scale=(520, 520), ratio_range=(0.5, 2.0)),
+            dict(type='RandomCrop', crop_size=(480, 480), cat_max_ratio=0.75),
+            dict(type='RandomFlip', prob=0.5),
+            dict(type='PhotoMetricDistortion'),
+            dict(
+                type='Normalize',
+                mean=[123.675, 116.28, 103.53],
+                std=[58.395, 57.12, 57.375],
+                to_rgb=True),
+            dict(type='Pad', size=(480, 480), pad_val=0, seg_pad_val=255),
+            dict(type='ToMask'),
+            dict(type='DefaultFormatBundle'),
+            dict(
+                type='Collect',
+                keys=['img', 'gt_semantic_seg', 'gt_masks', 'gt_labels'])
+        ]),
+    val=dict(
+        type='MODIS_Dataset',
+        data_root='MODIS_dataset_sample',
+        img_dir='images',
+        ann_dir='labels',
+        split='splits/val.txt',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(
+                type='MultiScaleFlipAug',
+                img_scale=(4096, 520),
+                flip=False,
+                transforms=[
+                    dict(type='Resize', keep_ratio=True),
+                    dict(type='ResizeToMultiple', size_divisor=32),
+                    dict(type='RandomFlip'),
+                    dict(
+                        type='Normalize',
+                        mean=[123.675, 116.28, 103.53],
+                        std=[58.395, 57.12, 57.375],
+                        to_rgb=True),
+                    dict(type='ImageToTensor', keys=['img']),
+                    dict(type='Collect', keys=['img'])
+                ])
+        ]),
+    test=dict(
+        type='MODIS_Dataset',
+        data_root='MODIS_dataset_sample',
+        img_dir='images',
+        ann_dir='labels',
+        split='splits/val.txt',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(
+                type='MultiScaleFlipAug',
+                img_scale=(4096, 520),
+                flip=False,
+                transforms=[
+                    dict(type='Resize', keep_ratio=True),
+                    dict(type='ResizeToMultiple', size_divisor=32),
+                    dict(type='RandomFlip'),
+                    dict(
+                        type='Normalize',
+                        mean=[123.675, 116.28, 103.53],
+                        std=[58.395, 57.12, 57.375],
+                        to_rgb=True),
+                    dict(type='ImageToTensor', keys=['img']),
+                    dict(type='Collect', keys=['img'])
+                ])
+        ]))
+log_config = dict(
+    interval=50, hooks=[dict(type='TextLoggerHook', by_epoch=False)])
+dist_params = dict(backend='nccl')
+log_level = 'INFO'
+load_from = 'configs/pascal_context/pretrained/mask2former_beit_adapter_base_480_40k_pascal_context_59.pth.tar'
+resume_from = None
+workflow = [('train', 1)]
+cudnn_benchmark = True
+optimizer = dict(
+    type='AdamW',
+    lr=3e-05,
+    betas=(0.9, 0.999),
+    weight_decay=0.05,
+    constructor='LayerDecayOptimizerConstructor',
+    paramwise_cfg=dict(num_layers=12, layer_decay_rate=0.95))
+optimizer_config = dict()
+lr_config = dict(
+    policy='poly',
+    warmup='linear',
+    warmup_iters=1500,
+    warmup_ratio=1e-06,
+    power=1.0,
+    min_lr=0.0,
+    by_epoch=False)
+runner = dict(type='IterBasedRunner', max_iters=4000)
+checkpoint_config = dict(by_epoch=False, interval=1000, max_keep_ckpts=1)
+evaluation = dict(
+    interval=4000, metric='mIoU', pre_eval=True, save_best='mIoU')
+pretrained = 'configs/pascal_context/pretrained/beit_base_patch16_224_pt22k_ft22k.pth'
+work_dir = 'test_1'
+gpu_ids = range(0, 1)
+auto_resume = False
+
+2023-02-22 17:30:30,738 - mmseg - INFO - Set random seed to 703545732, deterministic: False
+Position interpolate for blocks.0.attn.relative_position_bias_table from 27x27 to 59x59
+x = [-28.999948522582926, -24.887606396593682, -21.23237281224599, -17.98343774147309, -15.095638959119245, -12.52883425982421, -10.2473434563158, -8.219452402538689, -6.4169721472313235, -4.814847089910567, -3.390806692387691, -2.125055904388428, -1, 0, 1, 2.125055904388428, 3.390806692387691, 4.814847089910567, 6.4169721472313235, 8.219452402538689, 10.2473434563158, 12.52883425982421, 15.095638959119245, 17.98343774147309, 21.23237281224599, 24.887606396593682, 28.999948522582926]
+dx = [-29. -28. -27. -26. -25. -24. -23. -22. -21. -20. -19. -18. -17. -16.
+ -15. -14. -13. -12. -11. -10.  -9.  -8.  -7.  -6.  -5.  -4.  -3.  -2.
+  -1.   0.   1.   2.   3.   4.   5.   6.   7.   8.   9.  10.  11.  12.
+  13.  14.  15.  16.  17.  18.  19.  20.  21.  22.  23.  24.  25.  26.
+  27.  28.  29.]
+Position interpolate for blocks.1.attn.relative_position_bias_table from 27x27 to 59x59
+x = [-28.999948522582926, -24.887606396593682, -21.23237281224599, -17.98343774147309, -15.095638959119245, -12.52883425982421, -10.2473434563158, -8.219452402538689, -6.4169721472313235, -4.814847089910567, -3.390806692387691, -2.125055904388428, -1, 0, 1, 2.125055904388428, 3.390806692387691, 4.814847089910567, 6.4169721472313235, 8.219452402538689, 10.2473434563158, 12.52883425982421, 15.095638959119245, 17.98343774147309, 21.23237281224599, 24.887606396593682, 28.999948522582926]
+dx = [-29. -28. -27. -26. -25. -24. -23. -22. -21. -20. -19. -18. -17. -16.
+ -15. -14. -13. -12. -11. -10.  -9.  -8.  -7.  -6.  -5.  -4.  -3.  -2.
+  -1.   0.   1.   2.   3.   4.   5.   6.   7.   8.   9.  10.  11.  12.
+  13.  14.  15.  16.  17.  18.  19.  20.  21.  22.  23.  24.  25.  26.
+  27.  28.  29.]
+Position interpolate for blocks.2.attn.relative_position_bias_table from 27x27 to 59x59
+x = [-28.999948522582926, -24.887606396593682, -21.23237281224599, -17.98343774147309, -15.095638959119245, -12.52883425982421, -10.2473434563158, -8.219452402538689, -6.4169721472313235, -4.814847089910567, -3.390806692387691, -2.125055904388428, -1, 0, 1, 2.125055904388428, 3.390806692387691, 4.814847089910567, 6.4169721472313235, 8.219452402538689, 10.2473434563158, 12.52883425982421, 15.095638959119245, 17.98343774147309, 21.23237281224599, 24.887606396593682, 28.999948522582926]
+dx = [-29. -28. -27. -26. -25. -24. -23. -22. -21. -20. -19. -18. -17. -16.
+ -15. -14. -13. -12. -11. -10.  -9.  -8.  -7.  -6.  -5.  -4.  -3.  -2.
+  -1.   0.   1.   2.   3.   4.   5.   6.   7.   8.   9.  10.  11.  12.
+  13.  14.  15.  16.  17.  18.  19.  20.  21.  22.  23.  24.  25.  26.
+  27.  28.  29.]
+Position interpolate for blocks.3.attn.relative_position_bias_table from 27x27 to 59x59
+x = [-28.999948522582926, -24.887606396593682, -21.23237281224599, -17.98343774147309, -15.095638959119245, -12.52883425982421, -10.2473434563158, -8.219452402538689, -6.4169721472313235, -4.814847089910567, -3.390806692387691, -2.125055904388428, -1, 0, 1, 2.125055904388428, 3.390806692387691, 4.814847089910567, 6.4169721472313235, 8.219452402538689, 10.2473434563158, 12.52883425982421, 15.095638959119245, 17.98343774147309, 21.23237281224599, 24.887606396593682, 28.999948522582926]
+dx = [-29. -28. -27. -26. -25. -24. -23. -22. -21. -20. -19. -18. -17. -16.
+ -15. -14. -13. -12. -11. -10.  -9.  -8.  -7.  -6.  -5.  -4.  -3.  -2.
+  -1.   0.   1.   2.   3.   4.   5.   6.   7.   8.   9.  10.  11.  12.
+  13.  14.  15.  16.  17.  18.  19.  20.  21.  22.  23.  24.  25.  26.
+  27.  28.  29.]
+Position interpolate for blocks.4.attn.relative_position_bias_table from 27x27 to 59x59
+x = [-28.999948522582926, -24.887606396593682, -21.23237281224599, -17.98343774147309, -15.095638959119245, -12.52883425982421, -10.2473434563158, -8.219452402538689, -6.4169721472313235, -4.814847089910567, -3.390806692387691, -2.125055904388428, -1, 0, 1, 2.125055904388428, 3.390806692387691, 4.814847089910567, 6.4169721472313235, 8.219452402538689, 10.2473434563158, 12.52883425982421, 15.095638959119245, 17.98343774147309, 21.23237281224599, 24.887606396593682, 28.999948522582926]
+dx = [-29. -28. -27. -26. -25. -24. -23. -22. -21. -20. -19. -18. -17. -16.
+ -15. -14. -13. -12. -11. -10.  -9.  -8.  -7.  -6.  -5.  -4.  -3.  -2.
+  -1.   0.   1.   2.   3.   4.   5.   6.   7.   8.   9.  10.  11.  12.
+  13.  14.  15.  16.  17.  18.  19.  20.  21.  22.  23.  24.  25.  26.
+  27.  28.  29.]
+Position interpolate for blocks.5.attn.relative_position_bias_table from 27x27 to 59x59
+x = [-28.999948522582926, -24.887606396593682, -21.23237281224599, -17.98343774147309, -15.095638959119245, -12.52883425982421, -10.2473434563158, -8.219452402538689, -6.4169721472313235, -4.814847089910567, -3.390806692387691, -2.125055904388428, -1, 0, 1, 2.125055904388428, 3.390806692387691, 4.814847089910567, 6.4169721472313235, 8.219452402538689, 10.2473434563158, 12.52883425982421, 15.095638959119245, 17.98343774147309, 21.23237281224599, 24.887606396593682, 28.999948522582926]
+dx = [-29. -28. -27. -26. -25. -24. -23. -22. -21. -20. -19. -18. -17. -16.
+ -15. -14. -13. -12. -11. -10.  -9.  -8.  -7.  -6.  -5.  -4.  -3.  -2.
+  -1.   0.   1.   2.   3.   4.   5.   6.   7.   8.   9.  10.  11.  12.
+  13.  14.  15.  16.  17.  18.  19.  20.  21.  22.  23.  24.  25.  26.
+  27.  28.  29.]
+Position interpolate for blocks.6.attn.relative_position_bias_table from 27x27 to 59x59
+x = [-28.999948522582926, -24.887606396593682, -21.23237281224599, -17.98343774147309, -15.095638959119245, -12.52883425982421, -10.2473434563158, -8.219452402538689, -6.4169721472313235, -4.814847089910567, -3.390806692387691, -2.125055904388428, -1, 0, 1, 2.125055904388428, 3.390806692387691, 4.814847089910567, 6.4169721472313235, 8.219452402538689, 10.2473434563158, 12.52883425982421, 15.095638959119245, 17.98343774147309, 21.23237281224599, 24.887606396593682, 28.999948522582926]
+dx = [-29. -28. -27. -26. -25. -24. -23. -22. -21. -20. -19. -18. -17. -16.
+ -15. -14. -13. -12. -11. -10.  -9.  -8.  -7.  -6.  -5.  -4.  -3.  -2.
+  -1.   0.   1.   2.   3.   4.   5.   6.   7.   8.   9.  10.  11.  12.
+  13.  14.  15.  16.  17.  18.  19.  20.  21.  22.  23.  24.  25.  26.
+  27.  28.  29.]
+Position interpolate for blocks.7.attn.relative_position_bias_table from 27x27 to 59x59
+x = [-28.999948522582926, -24.887606396593682, -21.23237281224599, -17.98343774147309, -15.095638959119245, -12.52883425982421, -10.2473434563158, -8.219452402538689, -6.4169721472313235, -4.814847089910567, -3.390806692387691, -2.125055904388428, -1, 0, 1, 2.125055904388428, 3.390806692387691, 4.814847089910567, 6.4169721472313235, 8.219452402538689, 10.2473434563158, 12.52883425982421, 15.095638959119245, 17.98343774147309, 21.23237281224599, 24.887606396593682, 28.999948522582926]
+dx = [-29. -28. -27. -26. -25. -24. -23. -22. -21. -20. -19. -18. -17. -16.
+ -15. -14. -13. -12. -11. -10.  -9.  -8.  -7.  -6.  -5.  -4.  -3.  -2.
+  -1.   0.   1.   2.   3.   4.   5.   6.   7.   8.   9.  10.  11.  12.
+  13.  14.  15.  16.  17.  18.  19.  20.  21.  22.  23.  24.  25.  26.
+  27.  28.  29.]
+Position interpolate for blocks.8.attn.relative_position_bias_table from 27x27 to 59x59
+x = [-28.999948522582926, -24.887606396593682, -21.23237281224599, -17.98343774147309, -15.095638959119245, -12.52883425982421, -10.2473434563158, -8.219452402538689, -6.4169721472313235, -4.814847089910567, -3.390806692387691, -2.125055904388428, -1, 0, 1, 2.125055904388428, 3.390806692387691, 4.814847089910567, 6.4169721472313235, 8.219452402538689, 10.2473434563158, 12.52883425982421, 15.095638959119245, 17.98343774147309, 21.23237281224599, 24.887606396593682, 28.999948522582926]
+dx = [-29. -28. -27. -26. -25. -24. -23. -22. -21. -20. -19. -18. -17. -16.
+ -15. -14. -13. -12. -11. -10.  -9.  -8.  -7.  -6.  -5.  -4.  -3.  -2.
+  -1.   0.   1.   2.   3.   4.   5.   6.   7.   8.   9.  10.  11.  12.
+  13.  14.  15.  16.  17.  18.  19.  20.  21.  22.  23.  24.  25.  26.
+  27.  28.  29.]
+Position interpolate for blocks.9.attn.relative_position_bias_table from 27x27 to 59x59
+2023-02-22 17:30:36,221 - mmseg - WARNING - The model and loaded state dict do not match exactly
+
+unexpected key in source state_dict: fc_norm.weight, fc_norm.bias, head.weight, head.bias
+
+missing keys in source state_dict: blocks.0.attn.relative_position_index, blocks.1.attn.relative_position_index, blocks.2.attn.relative_position_index, blocks.3.attn.relative_position_index, blocks.4.attn.relative_position_index, blocks.5.attn.relative_position_index, blocks.6.attn.relative_position_index, blocks.7.attn.relative_position_index, blocks.8.attn.relative_position_index, blocks.9.attn.relative_position_index, blocks.10.attn.relative_position_index, blocks.11.attn.relative_position_index
+
+/home/jaehoonhahm/ViT-Adapter-Segmentation/segmentation/mmseg_custom/models/losses/cross_entropy_loss.py:230: UserWarning: Default ``avg_non_ignore`` is False, if you would like to ignore the certain label and average loss over non-ignore labels, which is the same with PyTorch official cross_entropy, set ``avg_non_ignore=True``.
+  warnings.warn(
+/home/jaehoonhahm/ViT-Adapter-Segmentation/segmentation/train.py:179: UserWarning: SyncBN is only supported with DDP. To be compatible with DP, we convert SyncBN to BN. Please use dist_train.sh which can avoid this error.
+  warnings.warn(
+2023-02-22 17:30:37,010 - mmseg - INFO - EncoderDecoderMask2Former(
+  (backbone): BEiTAdapter(
+    (patch_embed): PatchEmbed(
+      (proj): Conv2d(3, 768, kernel_size=(16, 16), stride=(16, 16))
+    )
+    (pos_drop): Dropout(p=0.0, inplace=False)
+    (blocks): ModuleList(
+      (0): Block(
+        (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=768, out_features=2304, bias=False)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=768, out_features=768, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): Identity()
+        (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=768, out_features=3072, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=3072, out_features=768, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+      (1): Block(
+        (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=768, out_features=2304, bias=False)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=768, out_features=768, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): DropPath(p=0.0181818176060915)
+        (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=768, out_features=3072, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=3072, out_features=768, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+      (2): Block(
+        (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=768, out_features=2304, bias=False)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=768, out_features=768, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): DropPath(p=0.036363635212183)
+        (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=768, out_features=3072, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=3072, out_features=768, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+      (3): Block(
+        (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=768, out_features=2304, bias=False)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=768, out_features=768, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): DropPath(p=0.05454545468091965)
+        (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=768, out_features=3072, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=3072, out_features=768, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+      (4): Block(
+        (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=768, out_features=2304, bias=False)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=768, out_features=768, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): DropPath(p=0.072727270424366)
+        (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=768, out_features=3072, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=3072, out_features=768, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+      (5): Block(
+        (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=768, out_features=2304, bias=False)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=768, out_features=768, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): DropPath(p=0.09090908616781235)
+        (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=768, out_features=3072, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=3072, out_features=768, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+      (6): Block(
+        (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=768, out_features=2304, bias=False)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=768, out_features=768, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): DropPath(p=0.10909091681241989)
+        (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=768, out_features=3072, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=3072, out_features=768, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+      (7): Block(
+        (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=768, out_features=2304, bias=False)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=768, out_features=768, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): DropPath(p=0.12727272510528564)
+        (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=768, out_features=3072, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=3072, out_features=768, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+      (8): Block(
+        (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=768, out_features=2304, bias=False)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=768, out_features=768, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): DropPath(p=0.1454545557498932)
+        (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=768, out_features=3072, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=3072, out_features=768, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+      (9): Block(
+        (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=768, out_features=2304, bias=False)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=768, out_features=768, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): DropPath(p=0.16363637149333954)
+        (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=768, out_features=3072, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=3072, out_features=768, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+      (10): Block(
+        (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=768, out_features=2304, bias=False)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=768, out_features=768, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): DropPath(p=0.1818181872367859)
+        (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=768, out_features=3072, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=3072, out_features=768, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+      (11): Block(
+        (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=768, out_features=2304, bias=False)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=768, out_features=768, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (drop_path): DropPath(p=0.20000000298023224)
+        (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (mlp): Mlp(
+          (fc1): Linear(in_features=768, out_features=3072, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=3072, out_features=768, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (spm): SpatialPriorModule(
+      (stem): Sequential(
+        (0): Conv2d(3, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (1): _BatchNormXd(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+        (3): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (4): _BatchNormXd(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (5): ReLU(inplace=True)
+        (6): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (7): _BatchNormXd(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (8): ReLU(inplace=True)
+        (9): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+      )
+      (conv2): Sequential(
+        (0): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (1): _BatchNormXd(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (conv3): Sequential(
+        (0): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (1): _BatchNormXd(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+srun: Job step aborted: Waiting up to 12 seconds for job step to finish.
+slurmstepd: error: *** JOB 284634 ON c03 CANCELLED AT 2023-02-22T17:30:38 ***
+        (2): ReLU(inplace=True)
+      )
