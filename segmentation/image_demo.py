@@ -19,6 +19,8 @@ def main():
     parser.add_argument('config', help='Config file')
     parser.add_argument('checkpoint', help='Checkpoint file')
     parser.add_argument('img_dir', help='Image file')
+    parser.add_argument('val_list', help='Validation list')
+
     parser.add_argument('--out', type=str, default="inference", help='out dir')
     parser.add_argument(
         '--device', default='cuda:0', help='Device used for inference')
@@ -42,7 +44,11 @@ def main():
     else:
         model.CLASSES = get_classes(args.palette)
     
-    for img in glob.glob(args.img_dir + '*.jpeg'):
+    f = open(args.val_list, 'r')
+    for line in f.readlines():
+        line = line.strip()
+        # for img in glob.glob(args.img_dir + line + '.jpeg'):
+        img = args.img_dir + line + '.jpeg'
         # test a single image
         result = inference_segmentor(model, img)
         # show the results
@@ -54,6 +60,7 @@ def main():
 
         classes = ('cloudy', 'uncertain clear', 'probably clear', 'confident clear')
         palette = [[255, 0, 0], [0, 255, 0], [0, 0, 255], [128, 128, 0]]
+        # RED, GREEN, BLUE, YELLOW
         
         result = model.show_result(img, result,
                                 palette = palette,
