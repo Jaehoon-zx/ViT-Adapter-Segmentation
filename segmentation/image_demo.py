@@ -70,6 +70,7 @@ def main():
         out_path = osp.join(args.out, osp.basename(img))
         cv2.imwrite(out_path, result)
         print(f"Result is save at {out_path}")
+        # changed
 
 if __name__ == '__main__':
     main()

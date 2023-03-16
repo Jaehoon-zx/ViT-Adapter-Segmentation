@@ -12,6 +12,8 @@
 # module load cuda/11.3            # 필요한 쿠다 버전 로드
 # eval "$(conda shell.bash hook)"  # Initialize Conda Environment
 # conda activate fourier       # Activate your conda environment
+#123
+
 
 source /home/${USER}/.bashrc
 

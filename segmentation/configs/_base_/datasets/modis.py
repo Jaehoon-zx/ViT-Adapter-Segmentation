@@ -1,4 +1,4 @@
-# dataset settings
+# dataset settings 1
 dataset_type = 'MODIS_Dataset'
 data_root = 'MODIS_dataset_sample'
 img_norm_cfg = dict(

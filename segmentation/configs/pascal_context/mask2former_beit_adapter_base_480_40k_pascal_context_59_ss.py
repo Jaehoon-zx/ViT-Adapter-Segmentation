@@ -1,4 +1,4 @@
-# Copyright (c) Shanghai AI Lab. All rights reserved.
+# Copyright (c) Shanghai AI Lab. All rights reserved. 1
 _base_ = [
     '../_base_/models/mask2former_beit_pascal.py',
     '../_base_/datasets/modis.py',
