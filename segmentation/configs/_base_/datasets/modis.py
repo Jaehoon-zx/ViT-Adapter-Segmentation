@@ -1,6 +1,6 @@
 # dataset settings 1
 dataset_type = 'MODIS_Dataset'
-data_root = 'MODIS_dataset_sample'
+data_root = '0314_MODIS_dataset_sample'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 
